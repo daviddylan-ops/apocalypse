@@ -1,0 +1,357 @@
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Cyberpunk Design System */
+
+@layer base {
+  :root {
+    --background: 0 0% 0%;
+    --foreground: 84 100% 80%;
+
+    --card: 0 0% 4%;
+    --card-foreground: 84 100% 80%;
+
+    --popover: 0 0% 4%;
+    --popover-foreground: 84 100% 80%;
+
+    --primary: 84 100% 80%;
+    --primary-foreground: 0 0% 0%;
+
+    --secondary: 0 0% 7%;
+    --secondary-foreground: 84 100% 80%;
+
+    --muted: 0 0% 7%;
+    --muted-foreground: 84 50% 60%;
+
+    --accent: 180 100% 50%;
+    --accent-foreground: 0 0% 0%;
+
+    --destructive: 16 100% 50%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 0 0% 7%;
+    --input: 0 0% 7%;
+    --ring: 84 100% 80%;
+
+    --radius: 0rem;
+
+    --sidebar-background: 0 0% 0%;
+    --sidebar-foreground: 84 100% 80%;
+    --sidebar-primary: 84 100% 80%;
+    --sidebar-primary-foreground: 0 0% 0%;
+    --sidebar-accent: 0 0% 4%;
+    --sidebar-accent-foreground: 84 100% 80%;
+    --sidebar-border: 0 0% 7%;
+    --sidebar-ring: 84 100% 80%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-deep-black-900 text-neon-green-300 font-cyber;
+    overflow-x: hidden;
+  }
+
+  /* Smooth scroll behavior */
+  html {
+    scroll-behavior: smooth;
+  }
+
+  /* Custom scrollbar */
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: #000;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: #CCFF00;
+    border-radius: 0;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: #B8FF00;
+  }
+}
+
+@layer components {
+  /* Glitch Effect */
+  .glitch-text {
+    position: relative;
+    color: #CCFF00;
+    font-weight: bold;
+  }
+
+  .glitch-text::before,
+  .glitch-text::after {
+    content: attr(data-text);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .glitch-text::before {
+    animation: glitch 0.3s infinite;
+    color: #ff0000;
+    z-index: -1;
+  }
+
+  .glitch-text::after {
+    animation: glitch 0.3s infinite reverse;
+    color: #00ffff;
+    z-index: -2;
+  }
+
+  /* Neon Glow Effect */
+  .neon-glow {
+    box-shadow: 
+      0 0 5px #CCFF00,
+      0 0 10px #CCFF00,
+      0 0 15px #CCFF00,
+      0 0 20px #CCFF00;
+    text-shadow: 
+      0 0 5px #CCFF00,
+      0 0 10px #CCFF00,
+      0 0 15px #CCFF00;
+  }
+
+  /* Screen Noise Overlay */
+  .screen-noise::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: 
+      repeating-linear-gradient(
+        90deg,
+        transparent,
+        transparent 2px,
+        rgba(204, 255, 0, 0.03) 2px,
+        rgba(204, 255, 0, 0.03) 4px
+      ),
+      repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 2px,
+        rgba(204, 255, 0, 0.03) 2px,
+        rgba(204, 255, 0, 0.03) 4px
+      );
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  /* Fracture Navigation Effect */
+  .nav-fracture {
+    transition: all 0.3s ease;
+  }
+
+  .nav-fracture:hover {
+    animation: fracture 0.3s ease-in-out;
+    filter: contrast(1.2);
+  }
+
+  /* Brutalist Card */
+  .brutalist-card {
+    background: #0A0A0A;
+    border: 2px solid #CCFF00;
+    transform-style: preserve-3d;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  }
+
+  .brutalist-card:hover {
+    transform: 
+      perspective(1000px) 
+      rotateX(5deg) 
+      rotateY(5deg) 
+      scale(1.02);
+    box-shadow: 
+      0 20px 40px rgba(204, 255, 0, 0.2),
+      0 0 20px #CCFF00;
+    border-color: #B8FF00;
+  }
+
+  /* VHS Glitch Effect */
+  .vhs-glitch {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .vhs-glitch::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.2),
+      transparent
+    );
+    transition: left 0.5s;
+  }
+
+  .vhs-glitch:hover::before {
+    left: 100%;
+  }
+
+  .vhs-glitch:hover {
+    filter: 
+      hue-rotate(90deg) 
+      saturate(1.5) 
+      contrast(1.2);
+  }
+
+  /* Scanline Effect */
+  .scanlines::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(204, 255, 0, 0.1) 2px,
+      rgba(204, 255, 0, 0.1) 4px
+    );
+    animation: scan-line 2s linear infinite;
+    pointer-events: none;
+  }
+
+  /* Matrix Background Effect */
+  .matrix-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: -1;
+    opacity: 0.1;
+  }
+
+  /* Chromatic Aberration Text */
+  .chromatic-text {
+    animation: chromatic 2s infinite;
+  }
+
+  /* Terminal Window Style */
+  .terminal {
+    background: #000;
+    border: 1px solid #CCFF00;
+    font-family: 'JetBrains Mono', monospace;
+    position: relative;
+  }
+
+  .terminal::before {
+    content: '● ● ●';
+    position: absolute;
+    top: 8px;
+    left: 12px;
+    color: #CCFF00;
+    font-size: 12px;
+  }
+
+  /* Typewriter Effect */
+  .typewriter {
+    border-right: 2px solid #CCFF00;
+    white-space: nowrap;
+    overflow: hidden;
+    animation: 
+      typewriter 3s steps(40) 1s forwards,
+      blink 1s infinite;
+  }
+
+  /* Holographic Shimmer */
+  .holographic {
+    background: linear-gradient(
+      45deg,
+      #CCFF00,
+      #00FFFF,
+      #8A00FF,
+      #CCFF00
+    );
+    background-size: 300% 300%;
+    animation: hue-rotate 3s ease infinite;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  @keyframes hue-rotate {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+
+  /* Custom Cursor */
+  .cyber-cursor {
+    cursor: none;
+  }
+
+  .cyber-cursor::after {
+    content: '+';
+    position: fixed;
+    color: #CCFF00;
+    font-size: 20px;
+    font-weight: bold;
+    pointer-events: none;
+    z-index: 9999;
+    mix-blend-mode: difference;
+  }
+}
+
+@layer utilities {
+  /* Text Stroke Effect */
+  .text-stroke {
+    -webkit-text-stroke: 1px #CCFF00;
+    text-stroke: 1px #CCFF00;
+  }
+
+  /* Clip Path Utilities */
+  .clip-diagonal {
+    clip-path: polygon(0 0, 95% 0, 100% 100%, 5% 100%);
+  }
+
+  .clip-triangle {
+    clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+  }
+
+  .clip-hexagon {
+    clip-path: polygon(30% 0%, 70% 0%, 100% 50%, 70% 100%, 30% 100%, 0% 50%);
+  }
+
+  /* Mix Blend Mode Utilities */
+  .blend-difference {
+    mix-blend-mode: difference;
+  }
+
+  .blend-screen {
+    mix-blend-mode: screen;
+  }
+
+  /* Accessibility */
+  @media (prefers-reduced-motion: reduce) {
+    * {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
