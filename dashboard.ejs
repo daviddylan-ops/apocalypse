@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Apocalypse Design - Admin Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/feather-icons"></script>
+    <style>
+      .gradient-bg {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      }
+      .card-hover {
+        transition: all 0.3s ease;
+      }
+      .card-hover:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1),
+          0 10px 10px -5px rgba(0, 0, 0, 0.04);
+      }
+      .status-badge {
+        padding: 0.25rem 0.75rem;
+        border-radius: 9999px;
+        font-size: 0.75rem;
+        font-weight: 600;
+      }
+      .status-pending {
+        background-color: #fef3c7;
+        color: #92400e;
+      }
+      .status-active {
+        background-color: #d1fae5;
+        color: #065f46;
+      }
+      .status-completed {
+        background-color: #dbeafe;
+        color: #1e40af;
+      }
+      .status-cancelled {
+        background-color: #fee2e2;
+        color: #991b1b;
+      }
+    </style>
+  </head>
+  <body class="bg-gray-50 min-h-screen">
+    <!-- Header -->
+    <header class="gradient-bg text-white shadow-lg">
+      <div class="container mx-auto px-6 py-4">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center space-x-3">
+            <i data-feather="zap" class="w-8 h-8"></i>
+            <h1 class="text-2xl font-bold">Apocalypse Design</h1>
+          </div>
+          <div class="flex items-center space-x-4">
+            <span class="text-sm opacity-90">Admin Dashboard</span>
+            <button
+              class="bg-white bg-opacity-20 px-4 py-2 rounded-lg hover:bg-opacity-30 transition-all"
+            >
+              <i data-feather="settings" class="w-4 h-4 inline mr-2"></i>
+              Settings
+            </button>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-6 py-8">
+      <!-- Stats Overview -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        <div class="bg-white rounded-xl shadow-md p-6 card-hover">
+          <div class="flex items-center">
+            <div class="p-3 rounded-full bg-blue-100 text-blue-600">
+              <i data-feather="users" class="w-6 h-6"></i>
+            </div>
+            <div class="ml-4">
+              <p class="text-sm font-medium text-gray-600">Total Users</p>
+              <p class="text-2xl font-semibold text-gray-900">
+                <%= users ? users.length : 0 %>
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-white rounded-xl shadow-md p-6 card-hover">
+          <div class="flex items-center">
+            <div class="p-3 rounded-full bg-green-100 text-green-600">
+              <i data-feather="briefcase" class="w-6 h-6"></i>
+            </div>
+            <div class="ml-4">
+              <p class="text-sm font-medium text-gray-600">Active Projects</p>
+              <p class="text-2xl font-semibold text-gray-900">
+                <%= projects ? projects.filter(p => p.status ===
+                'active').length : 0 %>
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-white rounded-xl shadow-md p-6 card-hover">
+          <div class="flex items-center">
+            <div class="p-3 rounded-full bg-purple-100 text-purple-600">
+              <i data-feather="star" class="w-6 h-6"></i>
+            </div>
+            <div class="ml-4">
+              <p class="text-sm font-medium text-gray-600">Services</p>
+              <p class="text-2xl font-semibold text-gray-900">
+                <%= services ? services.length : 0 %>
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-white rounded-xl shadow-md p-6 card-hover">
+          <div class="flex items-center">
+            <div class="p-3 rounded-full bg-orange-100 text-orange-600">
+              <i data-feather="message-circle" class="w-6 h-6"></i>
+            </div>
+            <div class="ml-4">
+              <p class="text-sm font-medium text-gray-600">Testimonials</p>
+              <p class="text-2xl font-semibold text-gray-900">
+                <%= testimonials ? testimonials.length : 0 %>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Main Content Grid -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <!-- Projects Section -->
+        <div class="bg-white rounded-xl shadow-md p-6">
+          <div class="flex items-center justify-between mb-6">
+            <h2 class="text-xl font-semibold text-gray-900">Recent Projects</h2>
+            <button
+              class="text-blue-600 hover:text-blue-800 text-sm font-medium"
+            >
+              View All
+            </button>
+          </div>
+          <div class="space-y-4">
+            <% if (projects && projects.length > 0) { %> <% projects.slice(0,
+            5).forEach(function(project) { %>
+            <div class="border border-gray-200 rounded-lg p-4">
+              <div class="flex items-center justify-between">
+                <div>
+                  <h3 class="font-medium text-gray-900">
+                    <%= project.project_name %>
+                  </h3>
+                  <p class="text-sm text-gray-600">
+                    <%= project.description ? project.description.substring(0,
+                    50) + '...' : 'No description' %>
+                  </p>
+                </div>
+                <span class="status-badge status-<%= project.status %>">
+                  <%= project.status.charAt(0).toUpperCase() +
+                  project.status.slice(1) %>
+                </span>
+              </div>
+              <div
+                class="mt-2 flex items-center justify-between text-sm text-gray-500"
+              >
+                <span
+                  >Budget: $<%= project.budget ? project.budget.toLocaleString()
+                  : 'N/A' %></span
+                >
+                <span
+                  >Created: <%= new
+                  Date(project.created_at).toLocaleDateString() %></span
+                >
+              </div>
+            </div>
+            <% }); %> <% } else { %>
+            <p class="text-gray-500 text-center py-4">No projects found</p>
+            <% } %>
+          </div>
+        </div>
+
+        <!-- Services Section -->
+        <div class="bg-white rounded-xl shadow-md p-6">
+          <div class="flex items-center justify-between mb-6">
+            <h2 class="text-xl font-semibold text-gray-900">Services</h2>
+            <button
+              class="text-blue-600 hover:text-blue-800 text-sm font-medium"
+            >
+              Manage Services
+            </button>
+          </div>
+          <div class="space-y-4">
+            <% if (services && services.length > 0) { %> <%
+            services.forEach(function(service) { %>
+            <div class="border border-gray-200 rounded-lg p-4">
+              <div class="flex items-center justify-between">
+                <div>
+                  <h3 class="font-medium text-gray-900">
+                    <%= service.title %>
+                  </h3>
+                  <p class="text-sm text-gray-600"><%= service.subtitle %></p>
+                </div>
+                <div class="text-right">
+                  <p class="font-semibold text-green-600">
+                    $<%= service.base_price.toLocaleString() %>
+                  </p>
+                  <span class="text-xs text-gray-500">
+                    <%= service.is_active ? 'Active' : 'Inactive' %>
+                  </span>
+                </div>
+              </div>
+            </div>
+            <% }); %> <% } else { %>
+            <p class="text-gray-500 text-center py-4">No services found</p>
+            <% } %>
+          </div>
+        </div>
+      </div>
+
+      <!-- Users and Team Section -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mt-8">
+        <!-- Users Section -->
+        <div class="bg-white rounded-xl shadow-md p-6">
+          <div class="flex items-center justify-between mb-6">
+            <h2 class="text-xl font-semibold text-gray-900">Users</h2>
+            <button
+              class="text-blue-600 hover:text-blue-800 text-sm font-medium"
+            >
+              Add User
+            </button>
+          </div>
+          <div class="space-y-3">
+            <% if (users && users.length > 0) { %> <%
+            users.forEach(function(user) { %>
+            <div
+              class="flex items-center justify-between p-3 border border-gray-200 rounded-lg"
+            >
+              <div class="flex items-center space-x-3">
+                <div
+                  class="w-10 h-10 bg-gray-200 rounded-full flex items-center justify-center"
+                >
+                  <span class="text-sm font-medium text-gray-600">
+                    <%= user.full_name ? user.full_name.charAt(0).toUpperCase()
+                    : user.username.charAt(0).toUpperCase() %>
+                  </span>
+                </div>
+                <div>
+                  <p class="font-medium text-gray-900">
+                    <%= user.full_name || user.username %>
+                  </p>
+                  <p class="text-sm text-gray-600"><%= user.email %></p>
+                </div>
+              </div>
+              <span
+                class="px-2 py-1 text-xs font-medium rounded-full <%= user.role === 'admin' ? 'bg-red-100 text-red-800' : 'bg-blue-100 text-blue-800' %>"
+              >
+                <%= user.role %>
+              </span>
+            </div>
+            <% }); %> <% } else { %>
+            <p class="text-gray-500 text-center py-4">No users found</p>
+            <% } %>
+          </div>
+        </div>
+
+        <!-- Team Members Section -->
+        <div class="bg-white rounded-xl shadow-md p-6">
+          <div class="flex items-center justify-between mb-6">
+            <h2 class="text-xl font-semibold text-gray-900">Team Members</h2>
+            <button
+              class="text-blue-600 hover:text-blue-800 text-sm font-medium"
+            >
+              Add Member
+            </button>
+          </div>
+          <div class="space-y-3">
+            <% if (teamMembers && teamMembers.length > 0) { %> <%
+            teamMembers.forEach(function(member) { %>
+            <div
+              class="flex items-center justify-between p-3 border border-gray-200 rounded-lg"
+            >
+              <div class="flex items-center space-x-3">
+                <div
+                  class="w-10 h-10 bg-gradient-to-r from-purple-400 to-pink-400 rounded-full flex items-center justify-center"
+                >
+                  <span class="text-sm font-medium text-white">
+                    <%= member.name.charAt(0).toUpperCase() %>
+                  </span>
+                </div>
+                <div>
+                  <p class="font-medium text-gray-900"><%= member.name %></p>
+                  <p class="text-sm text-gray-600"><%= member.role %></p>
+                </div>
+              </div>
+              <span class="text-xs text-gray-500">
+                <%= member.specialty %>
+              </span>
+            </div>
+            <% }); %> <% } else { %>
+            <p class="text-gray-500 text-center py-4">No team members found</p>
+            <% } %>
+          </div>
+        </div>
+      </div>
+
+      <!-- Testimonials Section -->
+      <div class="mt-8">
+        <div class="bg-white rounded-xl shadow-md p-6">
+          <div class="flex items-center justify-between mb-6">
+            <h2 class="text-xl font-semibold text-gray-900">
+              Featured Testimonials
+            </h2>
+            <button
+              class="text-blue-600 hover:text-blue-800 text-sm font-medium"
+            >
+              View All
+            </button>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <% if (testimonials && testimonials.length > 0) { %> <%
+            testimonials.filter(function(t) { return t.is_featured; }).slice(0,
+            4).forEach(function(testimonial) { %>
+            <div class="border border-gray-200 rounded-lg p-4">
+              <div class="flex items-center mb-3">
+                <% for(var i = 0; i < testimonial.rating; i++) { %>
+                <i
+                  data-feather="star"
+                  class="w-4 h-4 text-yellow-400 fill-current"
+                ></i>
+                <% } %> <% for(var i = testimonial.rating; i < 5; i++) { %>
+                <i data-feather="star" class="w-4 h-4 text-gray-300"></i>
+                <% } %>
+              </div>
+              <p class="text-gray-700 mb-3"><%= testimonial.content %></p>
+              <div
+                class="flex items-center justify-between text-sm text-gray-500"
+              >
+                <span>Client ID: <%= testimonial.client_id %></span>
+                <span
+                  ><%= new Date(testimonial.created_at).toLocaleDateString()
+                  %></span
+                >
+              </div>
+            </div>
+            <% }); %> <% } else { %>
+            <p class="text-gray-500 text-center py-4 col-span-2">
+              No testimonials found
+            </p>
+            <% } %>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white mt-12">
+      <div class="container mx-auto px-6 py-8">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center space-x-3">
+            <i data-feather="zap" class="w-6 h-6"></i>
+            <span class="text-lg font-semibold">Apocalypse Design</span>
+          </div>
+          <div class="text-sm text-gray-400">
+            © 2024 Apocalypse Design. All rights reserved.
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <script>
+      // Initialize Feather icons
+      feather.replace();
+
+      // Add some interactivity
+      document.addEventListener("DOMContentLoaded", function () {
+        // Add click handlers for buttons
+        const buttons = document.querySelectorAll("button");
+        buttons.forEach((button) => {
+          button.addEventListener("click", function (e) {
+            if (
+              e.target.textContent.includes("View All") ||
+              e.target.textContent.includes("Manage") ||
+              e.target.textContent.includes("Add")
+            ) {
+              e.preventDefault();
+              alert("This feature would navigate to a detailed view or form.");
+            }
+          });
+        });
+
+        // Add hover effects for cards
+        const cards = document.querySelectorAll(".card-hover");
+        cards.forEach((card) => {
+          card.addEventListener("mouseenter", function () {
+            this.style.transform = "translateY(-5px)";
+          });
+          card.addEventListener("mouseleave", function () {
+            this.style.transform = "translateY(0)";
+          });
+        });
+      });
+    </script>
+  </body>
+</html>
